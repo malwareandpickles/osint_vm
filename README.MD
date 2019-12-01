@@ -6,14 +6,16 @@ Instructions:
 
 1. Install the latest version of Xubuntu and configure in Virtualbox.
    (https://xubuntu.org/download)
-2. Create a user called 'osint'.
-3. Install ansible
+2. Make sure to create the user named 'osint'.
+3. Install some packages 'apt-get install ansible git'
 4. Clone or download this repo.
 5. Install by running 'ansible-playbook playbook2.yml --ask-sudo-pass'
 
 
-Notes:
+To be completed:
 
-Planning to automate the whole build process.
+Automating the whole build including spinning up Linux distro
+
 Adding configuration of Firefox (Installing addons / making changes)
+
 Adding a few more additional tools.
