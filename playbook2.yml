@@ -208,7 +208,7 @@
       mode: 0600
     with_fileglob:
       - "/tmp/vm-files/shortcuts/*"
-# Set scripts to executable
+# Set scripts to executable (well this is a hit and miss)
   - name: Display paths of all files in dir
     debug: msg={{ lookup('fileglob', '/home/osint/Documents/scripts/*.sh') }}
 
@@ -220,23 +220,6 @@
       mode: '0755'
     with_fileglob:
       - "/home/osint/Documents/scripts/*"
-
-# Setting alias for tools (To be completed at later stage)
-#
-#  - name: Alias
-#    shell: echo "alias theHarvester='python /opt/theHarvester/theHarvester.py'" >> /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias crawl='python /opt/Elasticsearch-Crawler/crawl.py'" >> /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias metagoofil='python3 /opt/metagoofil/metagoofil.py'" >> /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias photon='python3 /opt/Photon/photon.py'" >> /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias sherlock='python3 /opt/sherlock/sherlock.py'" >>  /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias skiptracer='python /opt/skiptracer/skiptracer.py'" >> /home/user/.bashrc
-#  - name: Alias
-#    shell: echo "alias sublist3r='python /opt/Sublist3r/sublist3r.py'" >> /home/user/.bashrc
 
 
   - name: display post install message
