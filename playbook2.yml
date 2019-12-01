@@ -1,0 +1,246 @@
+- hosts: localhost
+  tasks: 
+  - name: Installing packages - May take some time, better make a coffee
+    apt:
+      name:
+      - git
+      - nmap
+      - ffmpeg
+      - python-pip
+      - python3-pip
+      - python3.7
+      - xvfb
+      - kazam
+      - keepassxc
+      - mediainfo-gui
+      - webhttrack
+      - libimage-exiftool-perl
+      - default-jre
+      - curl
+      - wget
+      - zsh
+      state: latest
+      
+
+# Installs additional pip tools
+  - name: Installing additional tools using pip
+    pip:
+      name: 
+       - nested-lookup
+       - internetarchive
+       - instalooter
+       - youtube-dl
+       - argparse
+       - beautifulsoup4>=4.8.0
+       - bs4
+       - certifi>=2019.6.16
+       - cfscrape
+       - click
+       - colorama>=0.4.1
+       - dicttoxml
+       - dnspython
+       - flasgger
+       - flask
+       - flask-restful
+       - ipdb
+       - lxml>=4.4.0
+       - mechanize
+       - numpy
+       - pprint
+       - PySocks>=1.7.0
+       - python-docx
+       - pyyaml
+       - requests[socks]
+       - requests>=2.22.0
+       - requests-futures>=1.0.0
+       - rq
+       - simplejson
+       - soupsieve>=1.9.2
+       - stem>=1.7.1
+       - tld
+       - torrequest>=0.1.0
+       - unicodecsv
+       - urllib3
+       - XlsxWriter
+       - tqdm
+
+
+# Installs additional pip3 tools
+  - name: Installing additional tools using pip3
+    pip:
+      executable: pip3
+      name: 
+       - instaloader
+       - tld
+       - twint
+       - argparse
+       - beautifulsoup4>=4.8.0
+       - bs4
+       - certifi>=2019.6.16
+       - cfscrape
+       - click
+       - colorama>=0.4.1
+       - dicttoxml
+       - dnspython
+       - flasgger
+       - flask
+       - flask-restful
+       - ipdb
+       - lxml>=4.4.0
+       - mechanize
+       - numpy
+       - pprint
+       - PySocks>=1.7.0
+       - python-docx
+       - pyyaml
+       - requests[socks]
+       - requests>=2.22.0
+       - requests-futures>=1.0.0
+       - rq
+       - simplejson
+       - soupsieve>=1.9.2
+       - stem>=1.7.1
+       - tld
+       - torrequest>=0.1.0
+       - unicodecsv
+       - urllib3
+       - XlsxWriter
+       - tqdm
+
+# Download GIT repos
+  - name: Download EyeWitness
+    git:
+     repo: https://github.com/ChrisTruncer/EyeWitness.git
+     dest: /home/osint/Downloads/Programs/EyeWitness
+  - name: Download Sublist3r
+    git:
+     repo: https://github.com/aboul3la/Sublist3r.git
+     dest: /home/osint/Downloads/Programs/Sublist3r
+  - name: Download Photon
+    git:
+     repo: https://github.com/s0md3v/Photon.git
+     dest: /home/osint/Downloads/Programs/Photon
+  - name: Download theHarvester
+    git:
+     repo: https://github.com/laramies/theHarvester.git
+     dest: /home/osint/Downloads/Programs/theHarvester
+  - name: Download metagoofil
+    git:
+     repo: https://github.com/opsdisk/metagoofil.git
+     dest: /home/osint/Downloads/Programs/metagoofil
+  - name: Download recon-ng
+    git:
+     repo: https://github.com/lanmaster53/recon-ng.git
+     dest: /home/osint/Downloads/Programs/recon-ng
+  - name: Download skiptracer
+    git:
+     repo: https://github.com/xillwillx/skiptracer.git
+     dest: /home/osint/Downloads/Programs/skiptracer
+  - name: Download sherlock
+    git:
+     repo: https://github.com/sherlock-project/sherlock.git
+     dest: /home/osint/Downloads/Programs/sherlock
+  - name: Download Elasticsearch-Crawler
+    git:
+     repo: https://github.com/AmIJesse/Elasticsearch-Crawler.git
+     dest: /home/osint/Downloads/Programs/Elasticsearch-Crawler
+
+- hosts: localhost
+  become: yes
+  become_user: osint
+  tasks:
+ # Creates directories for files
+  - name: Creates directory
+    file:
+      path: /home/osint/Desktop/Tools_
+      state: directory
+  - name: Creates directory
+    file:
+      path: /home/osint/Desktop/Scripts_
+      state: directory
+  - name: Creates directory
+    file:
+      path: /home/osint/Desktop/Investigations_
+      state: directory
+# Downloads files
+  - name: Downloading Flowcharts from https://inteltechniques.com/osintbook
+    unarchive:
+      src: https://inteltechniques.com/osintbook/workflow.zip
+      dest: /home/osint/Documents/
+      remote_src: yes
+  - name: Downloading Templates from https://inteltechniques.com/osintbook
+    unarchive:
+      src: https://inteltechniques.com/osintbook/templates.zip
+      dest: /home/osint/Documents/
+      remote_src: yes
+  - name: Downloading Tools from https://inteltechniques.com/osintbook
+    unarchive:
+      src: https://inteltechniques.com/osintbook/tools.zip
+      dest: /home/osint/Documents/
+      remote_src: yes
+  - name: Downloading VM Files from https://inteltechniques.com/osintbook
+    unarchive:
+      src: https://inteltechniques.com/osintbook/vm-files.zip
+      dest: /tmp
+      remote_src: yes
+# Copy files
+  - name: Display paths of all .sh files in dir
+    debug: msg={{ lookup('fileglob', '/tmp/vm-files/scripts/*.sh') }}
+
+  - name: Copy each file over that matches the given pattern
+    copy:
+      src: "{{ item }}"
+      dest: "/home/osint/Documents/scripts/"
+      owner: "osint"
+      mode: 0600
+    with_fileglob:
+      - "/tmp/vm-files/scripts/*"
+# Copy files
+  - name: Display paths of all files in dir
+    debug: msg={{ lookup('fileglob', '/tmp/vm-files/shortcuts/*.desktop') }}
+
+  - name: Copy each file over that matches the given pattern
+    copy:
+      src: "{{ item }}"
+      dest: "/home/osint/Desktop/"
+      owner: "osint"
+      mode: 0600
+    with_fileglob:
+      - "/tmp/vm-files/shortcuts/*"
+# Set scripts to executable
+  - name: Change file ownership, group and permissions
+    file:
+      path: /home/osint/Documents/scripts/
+      owner: osint
+      group: osint
+      mode: '0755'    
+
+# Setting alias for tools (To be completed at later stage)
+#
+#  - name: Alias
+#    shell: echo "alias theHarvester='python /opt/theHarvester/theHarvester.py'" >> /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias crawl='python /opt/Elasticsearch-Crawler/crawl.py'" >> /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias metagoofil='python3 /opt/metagoofil/metagoofil.py'" >> /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias photon='python3 /opt/Photon/photon.py'" >> /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias sherlock='python3 /opt/sherlock/sherlock.py'" >>  /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias skiptracer='python /opt/skiptracer/skiptracer.py'" >> /home/user/.bashrc
+#  - name: Alias
+#    shell: echo "alias sublist3r='python /opt/Sublist3r/sublist3r.py'" >> /home/user/.bashrc
+
+
+  - name: display post install message
+    debug:
+      msg:
+        - '[+] Installation is now completed                              [+]'
+        - '[+] All tools are installed in /opt/                           [+]'
+        - '[+]                                                            [+]'        
+        - '[+] Things left to do                                          [+]'
+        - '[+] 1. Automate Firefox settings and addons                    [+]'
+        - '[+] 2. Adding additional tools                                 [+]'
+        - '[+]                                                            [+]'
+        - '[+] Please reboot to ensure all settings are working correctly [+]'
