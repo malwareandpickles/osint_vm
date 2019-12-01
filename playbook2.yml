@@ -1,4 +1,5 @@
 - hosts: localhost
+  become: yes
   tasks: 
   - name: Installing packages - May take some time, better make a coffee
     apt:
@@ -165,22 +166,22 @@
 # Downloads files
   - name: Downloading Flowcharts from https://inteltechniques.com/osintbook
     unarchive:
-      src: https://inteltechniques.com/osintbook/workflow.zip
+      src: https://malwareandpickles.com/osintbook/workflow.zip
       dest: /home/osint/Documents/
       remote_src: yes
   - name: Downloading Templates from https://inteltechniques.com/osintbook
     unarchive:
-      src: https://inteltechniques.com/osintbook/templates.zip
+      src: https://malwareandpickles.com/osintbook/templates.zip
       dest: /home/osint/Documents/
       remote_src: yes
   - name: Downloading Tools from https://inteltechniques.com/osintbook
     unarchive:
-      src: https://inteltechniques.com/osintbook/tools.zip
+      src: https://malwareandpickles.com/osintbook/tools.zip
       dest: /home/osint/Documents/
       remote_src: yes
   - name: Downloading VM Files from https://inteltechniques.com/osintbook
     unarchive:
-      src: https://inteltechniques.com/osintbook/vm-files.zip
+      src: https://malwareandpickles.com/osintbook/vm-files.zip
       dest: /tmp
       remote_src: yes
 # Copy files
@@ -208,12 +209,17 @@
     with_fileglob:
       - "/tmp/vm-files/shortcuts/*"
 # Set scripts to executable
+  - name: Display paths of all files in dir
+    debug: msg={{ lookup('fileglob', '/home/osint/Documents/scripts/*.sh') }}
+
   - name: Change file ownership, group and permissions
     file:
       path: /home/osint/Documents/scripts/
       owner: osint
       group: osint
-      mode: '0755'    
+      mode: '0755'
+    with_fileglob:
+      - "/home/osint/Documents/scripts/*"
 
 # Setting alias for tools (To be completed at later stage)
 #
