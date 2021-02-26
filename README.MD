@@ -1,3 +1,5 @@
+**Very much work-in-progress and has not been updated for some time.**
+
 This is an Ansible script based on the book Intel Techniques by Michael Bazzell. The main goal is to speed up the building of an OSINT Virtual Machine.
 
 Not in any way associated with the author, however bought the latest book and found it really interesting.
